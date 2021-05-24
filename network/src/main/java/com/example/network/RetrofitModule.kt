@@ -11,16 +11,18 @@ import java.util.concurrent.TimeUnit
  * Created by scordlau on 5/24/21.
  */
 
-class RetrofitModule<T : Any> {
+class RetrofitModule {
 
-    fun createApiService(serviceClazz: Class<T>): T? =
-            createRetrofit().create(serviceClazz)
+    fun createApiService(apiService: BaseService): BaseService? =
+            createRetrofit(apiService.getBaseUrl())
+                    .create(apiService::class.java)
 
-    fun createRetrofit(): Retrofit {
+    fun createRetrofit(baseUrl: String): Retrofit {
         val client = createOkHttpClient()
         return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
+                .baseUrl(baseUrl)
                 .build()
     }
 
