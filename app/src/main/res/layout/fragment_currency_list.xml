@@ -1,19 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="com.example.currencydemo.presentation.viewmodel.CurrencyListFragmentViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/dark">
 
-        <EditText
-            android:id="@+id/tv_search_currency_list_fragment"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dock_currency_list"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="Search.."
+            android:padding="8dp"
+            android:background="@color/blue_grey"
+            app:layout_constraintBottom_toTopOf="@id/recycler_view_currency_list_fragment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_equity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Equity"
+                android:textColor="@color/dark_blue"
+                app:layout_constraintBottom_toTopOf="@id/tv_balance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/tv_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Balance"
+                android:textColor="@color/dark_blue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_equity" />
+
+            <TextView
+                android:id="@+id/tv_equity_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:gravity="end"
+                android:text="@{String.valueOf(viewmodel.equityData)}"
+                app:layout_constraintBottom_toBottomOf="@id/tv_equity"
+                app:layout_constraintEnd_toStartOf="@id/separate_middle"
+                app:layout_constraintStart_toEndOf="@id/tv_equity"
+                app:layout_constraintTop_toTopOf="@id/tv_equity"
+                tools:text="$55555" />
+
+            <TextView
+                android:id="@+id/tv_balance_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:gravity="end"
+                android:text="@{String.valueOf(viewmodel.balanceData)}"
+                app:layout_constraintBottom_toBottomOf="@id/tv_balance"
+                app:layout_constraintEnd_toStartOf="@id/separate_middle"
+                app:layout_constraintStart_toEndOf="@id/tv_balance"
+                app:layout_constraintTop_toTopOf="@id/tv_balance"
+                tools:text="$55555" />
+
+            <View
+                android:id="@+id/separate_middle"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/dark_blue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Margin"
+                android:textColor="@color/dark_blue"
+                app:layout_constraintBottom_toTopOf="@id/tv_used"
+                app:layout_constraintStart_toEndOf="@id/separate_middle"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/tv_used"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Used"
+                android:textColor="@color/dark_blue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/separate_middle"
+                app:layout_constraintTop_toBottomOf="@id/tv_margin" />
+
+            <TextView
+                android:id="@+id/tv_margin_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:gravity="end"
+                android:text="$9971.92"
+                app:layout_constraintBottom_toBottomOf="@id/tv_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/separate_middle"
+                app:layout_constraintTop_toTopOf="@id/tv_margin" />
+
+            <TextView
+                android:id="@+id/tv_used_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:gravity="end"
+                android:text="$13.17"
+                app:layout_constraintBottom_toBottomOf="@id/tv_used"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/separate_middle"
+                app:layout_constraintTop_toTopOf="@id/tv_used" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_currency_list_fragment"
@@ -23,7 +144,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_search_currency_list_fragment" />
+            app:layout_constraintTop_toBottomOf="@id/dock_currency_list" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_currency_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewmodel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

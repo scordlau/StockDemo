@@ -2,7 +2,6 @@ package com.example.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.apache.http.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -11,13 +10,13 @@ import java.util.concurrent.TimeUnit
  * Created by scordlau on 5/24/21.
  */
 
-class RetrofitModule {
+class RetrofitModule<T : Any> {
 
-    fun createApiService(apiService: BaseService): BaseService? =
-            createRetrofit(apiService.getBaseUrl())
-                    .create(apiService::class.java)
+    fun createApiService(serviceClazz: Class<T>, baseUrl: String): T? =
+            createRetrofit(baseUrl)
+                    .create(serviceClazz)
 
-    fun createRetrofit(baseUrl: String): Retrofit {
+    private fun createRetrofit(baseUrl: String): Retrofit {
         val client = createOkHttpClient()
         return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
@@ -32,9 +31,8 @@ class RetrofitModule {
                         HTTP_TIMEOUT.toLong(),
                         TimeUnit.MILLISECONDS
                 )
-                .addInterceptor(AuthenticationInterceptor())
                 .addInterceptor(HttpLoggingInterceptor().apply {
-                    level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+                    level = HttpLoggingInterceptor.Level.BODY
                 })
 
 
