@@ -1,12 +1,15 @@
 package com.example.currencydemo.presentation.viewmodel
 
-import androidx.lifecycle.ViewModel
-import com.example.core.domain.CurrencyInfo
+import com.example.core.data.CurrencyModel
+import com.example.currencydemo.R
+import com.example.currencydemo.domain.abstraction.AdapterViewModel
 
 /**
  * Created by scordlau on 3/23/21.
  */
 
-class CurrencyListVHViewModel(val data: CurrencyInfo) : ViewModel() {
+class CurrencyListVHViewModel(val currencyModel: CurrencyModel, ) : AdapterViewModel() {
+
+    override fun type(): Int = R.layout.item_currency_list
 
 }

@@ -19,22 +19,58 @@
             android:id="@+id/tv_title_item_currency_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.data.name}"
+            android:gravity="start"
+            android:text="@{viewModel.currencyModel.name}"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_symbol_item_currency_list"
+            app:layout_constraintEnd_toStartOf="@id/tv_percentage_item_currency_list"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25"
             tools:text="BITCOIN" />
 
         <TextView
-            android:id="@+id/tv_symbol_item_currency_list"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_percentage_item_currency_list"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.data.symbol}"
+            android:gravity="start"
+            android:textColor="@{viewModel.currencyModel.isGreen == true ? @color/green : @color/red}"
+            app:formatDouble="@{viewModel.currencyModel.percentageChange}"
+            app:formatDoubleSuffix="@{@string/percentage}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_sell_item_currency_list"
+            app:layout_constraintStart_toEndOf="@id/tv_title_item_currency_list"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25"
+            tools:text="0.02%" />
+
+        <TextView
+            android:id="@+id/tv_sell_item_currency_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textColor="@color/white"
+            app:formatDouble="@{viewModel.currencyModel.sellRate}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_buy_item_currency_list"
+            app:layout_constraintStart_toEndOf="@id/tv_percentage_item_currency_list"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25"
+            tools:text="0.5782" />
+
+        <TextView
+            android:id="@+id/tv_buy_item_currency_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textColor="@color/white"
+            app:formatDouble="@{viewModel.currencyModel.buyRate}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_sell_item_currency_list"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="BTC" />
+            app:layout_constraintWidth_percent="0.25"
+            tools:text="0.92318" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

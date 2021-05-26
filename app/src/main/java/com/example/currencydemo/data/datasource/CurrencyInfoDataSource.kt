@@ -1,15 +1,9 @@
 package com.example.currencydemo.data.datasource
 
-import androidx.lifecycle.LiveData
-import com.example.core.domain.CurrencyInfo
-import com.example.currencydemo.domain.CurrencyInfoEntity
+import com.example.core.data.CurrencyListModel
 
 interface CurrencyInfoDataSource {
 
-    suspend fun add(item: CurrencyInfo)
-
-    suspend fun addAll(list: List<CurrencyInfo>)
-
-    suspend fun retrieveAll(): LiveData<List<CurrencyInfoEntity>>
+    suspend fun retrieveAll(): CurrencyListModel?
 
 }
