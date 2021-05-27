@@ -1,7 +1,7 @@
-package com.example.currencydemo.data.datasource
+package com.example.core.data.datasource
 
-import com.example.core.data.CurrencyListModel
-import com.example.core.data.CurrencyModel
+import com.example.core.data.datamodel.CurrencyListModel
+import com.example.core.data.datamodel.CurrencyModel
 import java.util.*
 import kotlin.random.Random
 

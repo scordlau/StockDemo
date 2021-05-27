@@ -1,6 +1,6 @@
 package com.example.currencydemo.presentation.viewmodel
 
-import com.example.core.data.CurrencyModel
+import com.example.core.data.datamodel.CurrencyModel
 import com.example.currencydemo.R
 import com.example.currencydemo.domain.abstraction.AdapterViewModel
 

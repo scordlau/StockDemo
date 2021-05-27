@@ -1,12 +1,10 @@
-package com.example.currencydemo.data.repository
+package com.example.core.data.repository
 
-import androidx.lifecycle.MutableLiveData
-import com.example.core.data.CurrencyListModel
-import com.example.core.data.CurrencyModel
 import com.example.core.data.UserProfile
-import com.example.currencydemo.data.datasource.FakeNetworkRandomDataSource
-import com.example.currencydemo.data.datasource.HardCodeDataSource
-import com.example.currencydemo.data.datasource.NetworkCurrencyInfoDataSource
+import com.example.core.data.datamodel.CurrencyListModel
+import com.example.core.data.datamodel.CurrencyModel
+import com.example.core.data.datasource.CurrencyInfoDataSource
+import com.example.core.data.datasource.FakeNetworkRandomDataSource
 import domain.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -17,24 +15,22 @@ import java.util.concurrent.atomic.AtomicBoolean
  * Created by scordlau on 3/22/21.
  */
 
-class CurrencyInfoRepository : Repository<CurrencyListModel> {
+class CurrencyInfoRepository(dataSource: CurrencyInfoDataSource) : Repository<CurrencyListModel> {
 
     var localData = LinkedHashMap<String, CurrencyModel>()
-    private val isApiError = MutableLiveData<Boolean>()
     val isFirstsLoad = AtomicBoolean(true)
 
     private val apiFlow: Flow<CurrencyListModel?> = flow {
-        val dataSource = NetworkCurrencyInfoDataSource(isApiError)
         val fakeRandomChangeSource = FakeNetworkRandomDataSource(localData)
         while (true) {
             //val result = if (isFirstsLoad.getAndSet(false)) dataSource.retrieveAll() else fakeRandomChangeSource.retrieveAll()
-            val result = if (isFirstsLoad.getAndSet(false)) HardCodeDataSource().retrieveAll() else fakeRandomChangeSource.retrieveAll()
+            val result = if (isFirstsLoad.getAndSet(false)) dataSource.retrieveAll() else fakeRandomChangeSource.retrieveAll()
             emit(result)
             delay(REFRESH_INTERVAL)
         }
     }.flowOn(Dispatchers.IO)
 
-    val outputFlow = apiFlow.map {
+    val outputFlow: Flow<List<CurrencyModel>> = apiFlow.map {
         updateLocalData(it)
         localData.map { it.value }.toList()
     }.onEach {
@@ -65,14 +61,6 @@ class CurrencyInfoRepository : Repository<CurrencyListModel> {
     }
 
     override suspend fun retrieveAll() {
-        /*
-        val dataSource = NetworkCurrencyInfoDataSource(isApiError)
-        withContext(Dispatchers.Main) {
-            val result = dataSource.retrieveAll()
-            apiData.value = result
-        }
-
-         */
     }
 
     companion object {
