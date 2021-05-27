@@ -1,4 +1,4 @@
-package com.example.core.data
+package com.example.core.data.datamodel
 
 import kotlin.random.Random
 

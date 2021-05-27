@@ -5,14 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.core.data.CurrencyModel
+import com.example.core.data.datamodel.CurrencyModel
 import com.example.currencydemo.R
 import com.example.currencydemo.databinding.FragmentCurrencyListBinding
 import com.example.currencydemo.presentation.adapter.CurrencyListAdapter
@@ -23,7 +25,7 @@ import com.example.currencydemo.presentation.viewmodel.factory.CurrencyListFragm
  * Created by scordlau on 3/23/21.
  */
 
-class CurrencyListFragment() : Fragment() {
+class CurrencyListFragment : Fragment() {
 
     lateinit var viewModel: CurrencyListFragmentViewModel
     lateinit var binding: FragmentCurrencyListBinding
@@ -58,14 +60,29 @@ class CurrencyListFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.data.observe(viewLifecycleOwner, Observer<List<CurrencyModel>?> {
-            currencyListAdapter.value = CurrencyListAdapter(it)
-            binding.recyclerViewCurrencyListFragment.adapter = currencyListAdapter.value
-        })
+        observeAdapterDataSource()
+        setupRecyclerView()
+        observeApiError()
+    }
+
+    private fun observeApiError() {
+        viewModel.isApiError.observe(viewLifecycleOwner) { isError ->
+            if (isError) Toast.makeText(context, "Api Error", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setupRecyclerView() {
         with(binding.recyclerViewCurrencyListFragment) {
             adapter = currencyListAdapter.value
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
+    }
+
+    private fun observeAdapterDataSource() {
+        viewModel.data.observe(viewLifecycleOwner, Observer<List<CurrencyModel>?> {
+            currencyListAdapter.value = CurrencyListAdapter(it)
+            binding.recyclerViewCurrencyListFragment.adapter = currencyListAdapter.value
+        })
     }
 
     companion object {

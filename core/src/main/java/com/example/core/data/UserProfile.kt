@@ -1,5 +1,6 @@
 package com.example.core.data
 
+import com.example.core.data.datamodel.CurrencyModel
 import java.util.concurrent.atomic.AtomicInteger
 
 object UserProfile {

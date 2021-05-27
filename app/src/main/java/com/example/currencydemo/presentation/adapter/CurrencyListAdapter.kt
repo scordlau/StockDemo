@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.example.core.data.CurrencyModel
+import com.example.core.data.datamodel.CurrencyModel
 import com.example.currencydemo.R
 import com.example.currencydemo.databinding.ItemCurrencyListBinding
 import com.example.currencydemo.domain.abstraction.AdapterViewModel
@@ -28,7 +28,9 @@ class CurrencyListAdapter(
 
     init {
         viewModels.add(0, CurrencyListHeaderViewModel())
-        data?.map { CurrencyListVHViewModel(it) }?.toMutableList()?.let { viewModels.addAll(it) }
+        data?.map { CurrencyListVHViewModel(it) }
+                ?.toMutableList()
+                ?.let { viewModels.addAll(it) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyListHolder<ViewModel> {

@@ -1,6 +1,6 @@
-package com.example.currencydemo.data.datasource
+package com.example.core.data.datasource
 
-import com.example.core.data.CurrencyListModel
+import com.example.core.data.datamodel.CurrencyListModel
 
 /**
  * Created by scordlau on 5/26/21.
