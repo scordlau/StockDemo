@@ -6,9 +6,12 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import com.example.core.data.UserProfile
 import com.example.core.data.repository.CurrencyInfoRepository
-import com.example.core.domain.ViewCurrencyList
+import com.example.core.domain.ViewCurrencyListConcreteCase
 import com.example.core.domain.ViewCurrencyListUseCase
+import com.example.network.ForexService
+import com.example.network.RetrofitModule
 import com.example.network.data.datasource.NetworkCurrencyInfoDataSource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.channels.Channel
@@ -24,9 +27,15 @@ class CurrencyListFragmentViewModel(app: Application) : AndroidViewModel(app) {
 
     private val isApiErrorChannel = Channel<Boolean>()
     val isApiError = isApiErrorChannel.receiveAsFlow().asLiveData()
-    private val viewCurrencyListUseCase: ViewCurrencyListUseCase = ViewCurrencyList(
-            CurrencyInfoRepository(NetworkCurrencyInfoDataSource(isApiErrorChannel))
-            // CurrencyInfoRepository(HardCodeDataSource())
+    private val viewCurrencyListUseCase: ViewCurrencyListUseCase = ViewCurrencyListConcreteCase(
+            CurrencyInfoRepository(
+                    NetworkCurrencyInfoDataSource(
+                            isApiErrorChannel,
+                            RetrofitModule<ForexService>().createApiService(ForexService::class.java, ForexService.baseUrl),
+                            Dispatchers.IO
+                    ),
+                    Dispatchers.IO)
+            //CurrencyInfoRepository(HardCodeDataSource(), Dispatchers.IO)
     )
 
     val data = viewCurrencyListUseCase.getCurrencyList().asLiveData()

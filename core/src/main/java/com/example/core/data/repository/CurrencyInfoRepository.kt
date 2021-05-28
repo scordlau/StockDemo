@@ -6,7 +6,7 @@ import com.example.core.data.datamodel.CurrencyModel
 import com.example.core.data.datasource.CurrencyInfoDataSource
 import com.example.core.data.datasource.FakeNetworkRandomDataSource
 import domain.Repository
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import java.util.concurrent.atomic.AtomicBoolean
@@ -15,7 +15,9 @@ import java.util.concurrent.atomic.AtomicBoolean
  * Created by scordlau on 3/22/21.
  */
 
-class CurrencyInfoRepository(dataSource: CurrencyInfoDataSource) : Repository<CurrencyListModel> {
+class CurrencyInfoRepository(dataSource: CurrencyInfoDataSource,
+                             dispatcher: CoroutineDispatcher
+) : Repository<CurrencyListModel> {
 
     var localData = LinkedHashMap<String, CurrencyModel>()
     val isFirstsLoad = AtomicBoolean(true)
@@ -28,7 +30,7 @@ class CurrencyInfoRepository(dataSource: CurrencyInfoDataSource) : Repository<Cu
             emit(result)
             delay(REFRESH_INTERVAL)
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(dispatcher)
 
     val outputFlow: Flow<List<CurrencyModel>> = apiFlow.map {
         updateLocalData(it)
