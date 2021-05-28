@@ -25,7 +25,6 @@ class CurrencyInfoRepository(dataSource: CurrencyInfoDataSource,
     private val apiFlow: Flow<CurrencyListModel?> = flow {
         val fakeRandomChangeSource = FakeNetworkRandomDataSource(localData)
         while (true) {
-            //val result = if (isFirstsLoad.getAndSet(false)) dataSource.retrieveAll() else fakeRandomChangeSource.retrieveAll()
             val result = if (isFirstsLoad.getAndSet(false)) dataSource.retrieveAll() else fakeRandomChangeSource.retrieveAll()
             emit(result)
             delay(REFRESH_INTERVAL)
