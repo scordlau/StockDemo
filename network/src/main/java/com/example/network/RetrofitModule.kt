@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 class RetrofitModule<T : Any> {
 
-    fun createApiService(serviceClazz: Class<T>, baseUrl: String): T? =
+    fun createApiService(serviceClazz: Class<T>, baseUrl: String): T =
             createRetrofit(baseUrl)
                     .create(serviceClazz)
 
